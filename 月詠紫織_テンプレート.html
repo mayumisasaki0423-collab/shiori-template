@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>月詠紫織 鑑定テンプレート</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500&family=Noto+Sans+JP:wght@300;400;500&display=swap');
+
+  :root {
+    --bg: #1a0f2e;
+    --surface: #241642;
+    --card: #2e1d54;
+    --card-hover: #3a2568;
+    --accent: #c9a7d8;
+    --accent2: #f0c6ff;
+    --text: #f0e8ff;
+    --muted: #9b84b8;
+    --tag-bg: #3d2570;
+    --copy-ok: #7ec8a0;
+    --border: rgba(201,167,216,0.15);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+  }
+
+  /* stars background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 25% 40%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 60% 10%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 80% 55%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 45% 70%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 30%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 5% 80%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 70% 85%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 35% 95%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 55% 30%, rgba(255,255,255,0.6) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 20% 60%, rgba(255,255,255,0.4) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 16px 60px;
+  }
+
+  header {
+    padding: 36px 0 24px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 28px;
+  }
+
+  header h1 {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 300;
+    font-size: 1.25rem;
+    letter-spacing: 0.25em;
+    color: var(--accent2);
+    margin-bottom: 4px;
+  }
+
+  header p {
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  /* Search */
+  .search-wrap {
+    position: relative;
+    margin-bottom: 24px;
+  }
+
+  .search-wrap input {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--text);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.88rem;
+    padding: 13px 16px 13px 42px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .search-wrap input::placeholder { color: var(--muted); }
+  .search-wrap input:focus { border-color: var(--accent); }
+
+  .search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    font-size: 1rem;
+    pointer-events: none;
+  }
+
+  /* Tab bar */
+  .tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
+  .tab {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    color: var(--muted);
+    cursor: pointer;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.78rem;
+    padding: 6px 14px;
+    transition: all 0.18s;
+    white-space: nowrap;
+  }
+
+  .tab:hover { border-color: var(--accent); color: var(--accent); }
+
+  .tab.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--bg);
+    font-weight: 500;
+  }
+
+  /* Section */
+  .section { margin-bottom: 32px; }
+
+  .section-title {
+    font-size: 0.8rem;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    margin-bottom: 12px;
+    padding-left: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* Card grid */
+  .cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  @media (max-width: 480px) {
+    .cards { grid-template-columns: 1fr; }
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    padding: 13px 14px;
+    font-size: 0.83rem;
+    line-height: 1.65;
+    color: var(--text);
+    transition: all 0.18s;
+    position: relative;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .card:hover {
+    background: var(--card-hover);
+    border-color: rgba(201,167,216,0.4);
+    transform: translateY(-1px);
+  }
+
+  .card:active { transform: scale(0.98); }
+
+  .card.copied {
+    border-color: var(--copy-ok);
+    background: rgba(126,200,160,0.1);
+  }
+
+  .copy-hint {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    font-size: 0.65rem;
+    color: var(--muted);
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+
+  .card:hover .copy-hint { opacity: 1; }
+
+  .copied-label {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    font-size: 0.65rem;
+    color: var(--copy-ok);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .card.copied .copied-label { opacity: 1; }
+  .card.copied .copy-hint { opacity: 0; }
+
+  /* empty */
+  .empty {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.85rem;
+    padding: 40px 0;
+    display: none;
+  }
+
+  /* toast */
+  #toast {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--copy-ok);
+    color: #1a0f2e;
+    font-size: 0.8rem;
+    font-family: 'Noto Sans JP', sans-serif;
+    padding: 9px 20px;
+    border-radius: 20px;
+    opacity: 0;
+    transition: all 0.25s;
+    pointer-events: none;
+    white-space: nowrap;
+    z-index: 100;
+  }
+
+  #toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>🌙 月詠紫織　鑑定テンプレート</h1>
+    <p>タップでコピー　／　キーワード検索対応</p>
+  </header>
+
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="search" placeholder="キーワードで検索…　例：苦しい　不安　責めなくて">
+  </div>
+
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-tab="all">すべて</button>
+    <button class="tab" data-tab="aizuchi">あいづち</button>
+    <button class="tab" data-tab="fuan">不安を受け止める</button>
+    <button class="tab" data-tab="anshin">安心を渡す</button>
+    <button class="tab" data-tab="kyoka">追わなくていい許可</button>
+    <button class="tab" data-tab="jiko">自己否定をやわらげる</button>
+    <button class="tab" data-tab="kaihiga">回避側の気持ちを伝える</button>
+    <button class="tab" data-tab="matsu">安心して待てる土台</button>
+    <button class="tab" data-tab="hanasu">依存を手放す</button>
+    <button class="tab" data-tab="negi">ねぎらい・回復</button>
+    <button class="tab" data-tab="mirai">未来に希望を残す</button>
+  </div>
+
+  <div id="content"></div>
+  <div class="empty" id="empty">見つかりませんでした🌙</div>
+
+</div>
+<div id="toast">コピーしました ✓</div>
+
+<script>
+const data = [
+  {
+    tab: 'aizuchi',
+    label: 'あいづち　― 感情を受け取る言葉',
+    phrases: [
+      'それは…本当にお辛かったですね😢🌙',
+      'そんな状況だったのですね…よく耐えてこられましたね🍃',
+      'お話ししてくださってありがとうございます…胸がぎゅっとなりました😌',
+      'それは心が揺れてしまいますよね…無理もないです🌙',
+      'とても繊細なお気持ち、伝わってきます🫧',
+      'その瞬間、きっと苦しかったですよね…😢',
+      'そう感じてしまうのも当然だと思います🍀',
+      'よくここまで抱えてこられましたね…本当に頑張っていますね✨',
+      'それは戸惑ってしまいますよね…🌫',
+      '心が追いつかない感じ、ありますよね😢',
+      'そのお気持ち、すごく大切なサインですね🌙',
+      '無理に整理しなくて大丈夫ですよ、自然な反応です🍃',
+      'それは…少し信じたくない気持ちにもなりますよね😢',
+      'とても複雑なお気持ちになりますよね…🫧',
+      'それは、言葉にするのも難しいくらいですよね😌',
+      '心の中でたくさん考えてしまいますよね🌙',
+      'その違和感、ちゃんと意味があるものだと思います🍀',
+      'それは受け止めきれなくて当然です…😢',
+      'そうなりますよね…胸がざわっとしますよね🌫',
+      'その一言、きっと深く残ってしまいますよね…',
+      'それはショックを受けてしまいますよね😢',
+      'そんなことがあったなんて…驚きましたよね🌙',
+      '想像以上の出来事でしたよね…🍃',
+      'それは心が追い込まれてしまいますよね😢',
+      'そこまで感じてしまうのも無理はないです🫧',
+      'ご自身を責めなくて大丈夫ですよ🌙',
+      'それだけ大切に思っていた証ですね🍀',
+      'その優しさがあるからこそ、苦しくなるんですよね😢',
+      'とても真っ直ぐなお気持ちですね✨',
+      'それだけ本気で向き合っていたんですね…🌙',
+      'それは悩んでしまいますよね…当然です😌',
+      'どう受け止めたらいいか迷いますよね🌫',
+      '答えを探したくなるお気持ち、よく分かります🍃',
+      '心が行ったり来たりしますよね…🫧',
+      'それは簡単に割り切れないですよね😢',
+      'その迷い、とても自然なものです🌙',
+      'どちらの気持ちも大切にしたくなりますよね🍀',
+      'それは考え込んでしまう流れですよね…😌',
+      'すぐに結論が出ないのも無理はないです🌫',
+      '心が引っかかる感じ、ありますよね😢',
+      'それはもどかしいお気持ちになりますよね…🌙',
+      '動けない感じ、つらいですよね🍃',
+      'どうしたらいいのか分からなくなりますよね😢',
+      'その状態、とてもエネルギーを使いますよね🫧',
+      '心が疲れてしまいますよね…本当に😌',
+      '少し休みたくなるような感覚ですよね🌙',
+      '頑張り続けるのもしんどいですよね😢',
+      'それでも向き合っているの、すごいことです✨',
+      'あなたなりに一生懸命考えてきたんですね🍀',
+      'ここまで話してくださったこと自体、とても大切な一歩です🌙',
+    ]
+  },
+  {
+    tab: 'fuan',
+    label: '🌫 不安をそのまま受け止める',
+    phrases: [
+      '不安になるのは、それだけ大切に想っている証ですね😌🌙',
+      'その揺れる気持ち、とても自然なものですよ🍃',
+      '安心できない時って、心がざわつきますよね😢',
+      '大丈夫ですよ、その感じ方で間違っていません🌙',
+      'ちゃんと向き合っているからこその不安ですね✨',
+    ]
+  },
+  {
+    tab: 'anshin',
+    label: '🌙 安心を少しずつ渡す',
+    phrases: [
+      '今すぐ答えが出なくても大丈夫ですよ😌',
+      'この関係、急がなくて大丈夫な流れですよ🌙',
+      '必要なタイミングで、ちゃんと動いていきます🍃',
+      '少しずつでも、関係は育っていきますよ✨',
+      '焦らなくても、流れは止まっていません🌫',
+    ]
+  },
+  {
+    tab: 'kyoka',
+    label: '🫧 追いすぎなくていい許可',
+    phrases: [
+      '無理に追いかけなくても大丈夫ですよ🌙',
+      '頑張って繋ぎ止めなくても、離れるものではないです😌',
+      '今は少し力を抜いてもいいタイミングですね🍃',
+      '追うことでしか繋がらない関係ではないですよ✨',
+      '○○さんが自然体でいられることが一番大切です🌙',
+    ]
+  },
+  {
+    tab: 'anshin',
+    label: '🌙 愛されている不安への安心',
+    phrases: [
+      '見えないから不安になるだけで、気持ち自体は消えていないですよ😌',
+      '言葉が少ないだけで、想いがないわけではないです🍃',
+      '彼なりのペースで関わろうとしている流れですね🌙',
+      '表現の仕方が違うだけなんですよね✨',
+      'ちゃんと繋がりは残っていますよ🌫',
+    ]
+  },
+  {
+    tab: 'jiko',
+    label: '🍀 自己否定をやわらげる',
+    phrases: [
+      '○○さんが悪いわけではないですよ😌',
+      'その感じ方は、とても優しい人のものです🌙',
+      '愛そうとした結果ですから、自信持っていいですよ✨',
+      'こんなに向き合えていること自体、すごいことです🍃',
+      '○○さんの魅力はちゃんと伝わっていますよ🌙',
+    ]
+  },
+  {
+    tab: 'kaihiga',
+    label: '🌫 回避側の気持ちをやわらかく伝える',
+    phrases: [
+      '彼も自分のペースを守りたい気持ちがありそうですね😌',
+      '近づきたい気持ちと、距離を取りたい気持ちが混ざっているようです🌙',
+      '嫌いだからではなく、怖さが出ている可能性もあります🍃',
+      '自分の中を整えながら関わろうとしている感じですね✨',
+      '距離を取ることでバランスを取っているようにも見えます🌫',
+    ]
+  },
+  {
+    tab: 'matsu',
+    label: '🌙 安心して待てる土台づくり',
+    phrases: [
+      '今は「待つことにも意味がある時期」ですね😌',
+      'この時間も、関係を整えるための流れですよ🌙',
+      '少し距離があるからこそ見えるものもあります🍃',
+      '焦らずに見守ることで、自然に動く流れです✨',
+      'タイミングが合う時に、ちゃんと重なりますよ🌙',
+    ]
+  },
+  {
+    tab: 'hanasu',
+    label: '🫧 依存をやわらかく手放す',
+    phrases: [
+      '彼の気持ちだけでなく、○○さんの心も大切にしていきましょう😌',
+      '自分を満たす時間も少しずつ作っていきましょう🌙',
+      '○○さん自身の安心感も育てていけるといいですね🍃',
+      '彼中心になりすぎなくても大丈夫ですよ✨',
+      'ご自身の軸を少しずつ戻していきましょう🌫',
+    ]
+  },
+  {
+    tab: 'negi',
+    label: '🌙 ねぎらい・回復',
+    phrases: [
+      'ここまで本当によく頑張ってこられましたね😢',
+      'ずっと気を張っていたのではないですか？少し休みましょう🌙',
+      '心が疲れてしまうのも無理はないです🍃',
+      '今はご自身を優しく守る時間にしましょう✨',
+      'そのままの○○さんで十分価値がありますよ🌙',
+    ]
+  },
+  {
+    tab: 'mirai',
+    label: '🌟 未来に希望を残す',
+    phrases: [
+      'この経験も、ちゃんと意味のある流れですよ😌',
+      '必要なご縁は、ちゃんと残っていきます🌙',
+      '今より少し安心できる未来に繋がっていますよ🍃',
+      'ゆっくりでも、良い方向に進んでいます✨',
+      'またいつでも、一緒に整えていきましょうね🌙',
+    ]
+  },
+];
+
+let currentTab = 'all';
+let searchQuery = '';
+
+function render() {
+  const content = document.getElementById('content');
+  const empty = document.getElementById('empty');
+  content.innerHTML = '';
+  let totalShown = 0;
+
+  data.forEach(section => {
+    if (currentTab !== 'all' && section.tab !== currentTab) return;
+
+    const filtered = section.phrases.filter(p =>
+      !searchQuery || p.includes(searchQuery)
+    );
+    if (!filtered.length) return;
+    totalShown += filtered.length;
+
+    const sec = document.createElement('div');
+    sec.className = 'section';
+
+    const title = document.createElement('div');
+    title.className = 'section-title';
+    title.textContent = section.label;
+    sec.appendChild(title);
+
+    const grid = document.createElement('div');
+    grid.className = 'cards';
+
+    filtered.forEach(phrase => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = phrase.replace(/\n/g, '<br>') +
+        '<span class="copy-hint">タップでコピー</span>' +
+        '<span class="copied-label">コピー済み ✓</span>';
+
+      card.addEventListener('click', () => {
+        navigator.clipboard.writeText(phrase).then(() => {
+          card.classList.add('copied');
+          showToast();
+          setTimeout(() => card.classList.remove('copied'), 1800);
+        });
+      });
+      grid.appendChild(card);
+    });
+
+    sec.appendChild(grid);
+    content.appendChild(sec);
+  });
+
+  empty.style.display = totalShown === 0 ? 'block' : 'none';
+}
+
+function showToast() {
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1600);
+}
+
+document.getElementById('tabs').addEventListener('click', e => {
+  if (!e.target.classList.contains('tab')) return;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  e.target.classList.add('active');
+  currentTab = e.target.dataset.tab;
+  render();
+});
+
+document.getElementById('search').addEventListener('input', e => {
+  searchQuery = e.target.value.trim();
+  // reset tab to all when searching
+  if (searchQuery) {
+    currentTab = 'all';
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelector('[data-tab="all"]').classList.add('active');
+  }
+  render();
+});
+
+render();
+</script>
+</body>
+</html>
